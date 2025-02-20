@@ -67,73 +67,58 @@ app.get('/', (req, res) => {
     });
   });
 
-// trying APP.PUT for updating table
-// first we have to make a route that gets the task id
+// GET route that retrieves the task id
 app.get('/tasks/:id', (req, res) => {
-  const taskId = req.params.id;
+  const params = req.params.id;
+  const getQuery = 'SELECT * FROM tasks WHERE id = ?';
 
-  db.query('SELECT * FROM tasks WHERE id = ?', [taskId], (err, results) => {
+  db.query(getQuery, [params], (err, results) => {
     if (err) {
-      return res.status(500).json({ error: 'Database error'});
+      console.error('Error retrieving task:', err);
+      res.status(500).json({ error: 'Error retrieving tasks' });
+    } else{
+      res.status(200).json(results[0]);
     }
-
-    if (results.length === 0) {
-      return res.status(404).json({ message: 'Task not found' });
-    }
-
-    res.json(results[0]); 
   });
 });
 
 // PUT route to update the "is_completed" field for a task
 app.put('/tasks/:id', (req, res) => {
-  const taskId = req.params.id;  // Get task ID from URL
-  const {is_completed} = req.body;  
-
+  const params = [req.body['is_completed'], req.params.id];  
   const updateQuery = 'UPDATE tasks SET is_completed = ? WHERE id = ?';
 
-  //passing id, description,title,is_completed as parameters
-  db.query(updateQuery, [is_completed, taskId], (err, results) => {
+  db.query(updateQuery, params, (err, results) => {
     if (err) {
-      return res.status(500).json({ error: 'Database error'});
+      console.error('Error updating task:', err);
+      return res.status(500).json({ error: 'Database error' });
     }
-
     if (results.affectedRows === 0) {
       return res.status(404).json({ message: 'Task not found' });
     }
-
-    res.json({ message: 'Task completion status updated successfully' });
+    res.status(200).json({ message: 'Task completion status updated successfully' });
   });
 });
 
 //Delete a row with app.delete
-app.delete('/tasks/:id', (req, res) => {
-  const taskId = req.params.id;  
 
-  // SQL query to delete the task by ID
+app.delete('/tasks', (req, res) => {
+  const params = [req.body['id']]; 
   const deleteQuery = 'DELETE FROM tasks WHERE id = ?';
 
-  //passing the ID as a parameter
-  db.query(deleteQuery, [taskId], (err, results) => {
+  db.query(deleteQuery, params, (err, results) => {
     if (err) {
-      return res.status(500).json({ error: 'Database error'});
+      console.error('Database error:', err); 
+      return res.status(500).json({ error: 'Database error' });
     }
-
     if (results.affectedRows === 0) {
       return res.status(404).json({ message: 'Task not found' });
     }
-
-    // Task was deleted successfully
     res.json({ message: 'Task deleted successfully' });
   });
 });
-
 
 //Beam me up scotty
   app.listen(port, () => {
     console.log(`listening on port ${port}`)
   });
-
-
-  // Currently creates, reads, updates and deletes - I want to clean it so when i'm updating I could target individual strings. 
-  // and fixing the ID problem. 
+ 
