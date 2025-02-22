@@ -92,11 +92,9 @@ app.put('/tasks/:id', (req, res) => {
       console.error('Error updating task:', err);
       return res.status(500).json({ error: 'Database error' });
     }
-    if (results.affectedRows === 0) {
-      return res.status(404).json({ message: 'Task not found' });
-    }
+    else {
     res.status(200).json({ message: 'Task completion status updated successfully' });
-  });
+  }});
 });
 
 //Delete a row with app.delete
@@ -109,12 +107,10 @@ app.delete('/tasks', (req, res) => {
     if (err) {
       console.error('Database error:', err); 
       return res.status(500).json({ error: 'Database error' });
-    }
-    if (results.affectedRows === 0) {
-      return res.status(404).json({ message: 'Task not found' });
-    }
+}
+   else {
     res.json({ message: 'Task deleted successfully' });
-  });
+  }});
 });
 
 //Beam me up scotty
