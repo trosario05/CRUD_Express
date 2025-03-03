@@ -16,19 +16,15 @@ function TaskList(){
 
 
     return (
-    <div>
-        {tasks.map((task) => (
-        <ul> 
-            <li>{task.title}</li>
-            <li>{task.description}</li>
-            <li>{task.is_completed}</li>
-            
-        
-
-        </ul>
+    <div className= "task-list">
+        {tasks.map((task) => ( 
+        <div key={task.id} onClick={() => onSelectTask(task)}>
+            <h3>{task.title}</h3>
+            <p>{task.description}</p>
+        </div>
         ))}
     </div>
     );
 };
 
-export default TaskList
+export default TaskList;

@@ -1,0 +1,12 @@
+.app-container {
+    display: flex;
+    padding: 10px;
+}
+
+.task-list{
+    width: 55%;
+    border-right: 2px solid black; 
+    padding: 10px;
+    overflow-y: auto;
+    height: 100vh;
+}
