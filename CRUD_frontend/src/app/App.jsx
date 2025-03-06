@@ -1,5 +1,6 @@
 import React from 'react';
 import TaskList from '../tasklist/TaskList';
+import Dropdown from '../dropdown/Dropdown';
 import './App.css';
 
 function App() {
@@ -8,6 +9,7 @@ function App() {
       <>
         <div className="app-container">
             <TaskList/> 
+            <Dropdown/>
         </div>
       </>
     )

@@ -18,7 +18,7 @@ function TaskList(){
     return (
     <div className= "task-list">
         {tasks.map((task) => ( 
-        <div key={task.id} onClick={() => onSelectTask(task)}>
+        <div key={task.id}>
             <h3>{task.title}</h3>
             <p>{task.description}</p>
         </div>
